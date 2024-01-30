@@ -1,0 +1,28 @@
+---
+import { Footer as VykeFooter } from "@vyke/astro";
+import Icon from "./Icon.astro";
+---
+
+<VykeFooter
+  openSourceLinks={[
+    {
+      href: "https://github.com/albizures/vyke-results",
+      label: "@vyke/results",
+    },
+    {
+      href: "https://github.com/albizures/vyke-dom",
+      label: "@vyke/dom",
+    },
+  ]}
+  projectLinks={[
+    { href: "https://clock.vyke.dev", label: "Online Clock" },
+    { href: "https://flowmodoro.vyke.dev", label: "Flowmodoro App" },
+  ]}
+>
+  <span slot="twitter-icon">
+    <Icon class="text-xl" icon="twitter" />
+  </span>
+  <span slot="github-icon">
+    <Icon class="text-xl" icon="github" />
+  </span>
+</VykeFooter>

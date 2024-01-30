@@ -1,0 +1,48 @@
+---
+export type Props = {
+  class?: string;
+  name: string;
+  size?: "lg" | "md" | "sm" | "xs";
+  type?:
+    | "neutral"
+    | "primary"
+    | "secondary"
+    | "accent"
+    | "ghost"
+    | "link"
+    | "info"
+    | "success"
+    | "warning"
+    | "error";
+};
+
+const { class: className, size, type, name } = Astro.props;
+---
+
+<select
+  name={name}
+  class:list={[
+    "select select-bordered",
+    className,
+    {
+      // types
+      "select-neutral": type === "neutral",
+      "select-primary": type === "primary",
+      "select-secondary": type === "secondary",
+      "select-accent": type === "accent",
+      "select-ghost": type === "ghost",
+      "select-link": type === "link",
+      //
+      "select-info": type === "info",
+      "select-success": type === "success",
+      "select-warning": type === "warning",
+      "select-error": type === "error",
+      // size
+      "select-lg": size === "lg",
+      "select-sm": size === "sm",
+      "select-xs": size === "xs",
+    },
+  ]}
+>
+  <slot />
+</select>

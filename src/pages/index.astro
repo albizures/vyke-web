@@ -1,0 +1,164 @@
+---
+import Footer from "../components/Footer.astro";
+import CenterHero from "../layouts/CenterHero.astro";
+import Page from "../layouts/Page.astro";
+import { widthInput, heightInput } from "../entities/ids";
+import Button from "../components/Button.astro";
+import Icon from "../components/Icon.astro";
+import BorderModifierTemplate from "../components/borderModifier/BorderModifierTemplate.astro";
+import BorderModifier from "../components/borderModifier/BorderModifier.astro";
+---
+
+<Page>
+  <CenterHero direction="row" class="max-w-6xl mx-auto">
+    <div class="flex-1 flex">
+      <div
+        class="flex border border-base-300 max-w-xs justify-center w-full items-center aspect-square shadow-inner bg-base-300"
+      >
+        <div
+          class="w-10 h-10 bg-primary shadow-lg border border-primary-content box relative"
+        >
+        </div>
+      </div>
+    </div>
+    <div class="flex-1 p-4">
+      <form class="global-form">
+        <input
+          type="range"
+          min="30"
+          max="200"
+          value="40"
+          name="width"
+          class={`range ${widthInput}`}
+        />
+        <input
+          type="range"
+          min="30"
+          max="200"
+          value="40"
+          name="height"
+          class=`range ${heightInput}`
+        />
+        <input
+          type="range"
+          min="00"
+          max="100"
+          value="40"
+          name="borderRadius"
+          class=`range`
+        />
+      </form>
+      <div class="border border-base-200 rounded-lg p-2">
+        <Button
+          class="mt-2 w-full"
+          classId="new-modifier-btn"
+          modifier="outline"
+          type="ghost"
+          size="xs"
+        >
+          <Icon icon="plus" />
+        </Button>
+        <form class="modifiers-form mt-2 space-y-2">
+          <BorderModifier sideValue="left" />
+        </form>
+      </div>
+    </div>
+  </CenterHero>
+  <BorderModifierTemplate />
+  <Footer />
+</Page>
+
+<script>
+  import { query, select, on } from "@vyke/dom";
+  import { unwrap } from "@vyke/results";
+  import { BorderModifier } from "../components/borderModifier/borderModifier";
+
+  const [box, globalForm] = unwrap(
+    select(
+      query<HTMLDivElement>(".box"),
+      query<HTMLFormElement>(".global-form")
+    )
+  );
+  const [newModifierBtn, modifiersForm] = unwrap(
+    select(
+      query<HTMLButtonElement>(".new-modifier-btn"),
+      query<HTMLFormElement>(".modifiers-form")
+    )
+  );
+
+  on(newModifierBtn, "click", () => {
+    modifiersForm.append(document.createElement(BorderModifier.vname));
+  });
+
+  function applyValues() {
+    const globalData = new FormData(globalForm);
+    const modifiersData = new FormData(modifiersForm);
+    box.removeAttribute("style");
+
+    for (const [name, field] of [...globalData, ...modifiersData]) {
+      switch (name) {
+        case "borderStyle":
+        case "borderTopStyle":
+        case "borderRightStyle":
+        case "borderBottomStyle":
+        case "borderLeftStyle":
+          setStyle(box, name, `${field}`);
+          break;
+        case "width":
+        case "height":
+        case "borderWidth":
+        case "borderTopWidth":
+        case "borderRightWidth":
+        case "borderBottomWidth":
+        case "borderLeftWidth":
+        case "borderRadius":
+          setStyle(box, name, `${field}px`);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  on(globalForm, "change", (_event) => {
+    applyValues();
+  });
+
+  on(modifiersForm, "change", () => {
+    applyValues();
+  });
+
+  applyValues();
+
+  function setStyle<
+    TElement extends ElementCSSInlineStyle,
+    TName extends keyof CSSStyleDeclaration,
+  >(element: TElement, name: TName, value: TElement["style"][TName]) {
+    element.style[name] = value;
+  }
+</script>
+
+<style>
+  .box {
+    transition: all 0.8s /*cubic-bezier(1, 0, 0, 1)*/;
+  }
+
+  .box::before,
+  .box::after {
+    content: " ";
+    @apply absolute bg-primary-content;
+  }
+
+  .box::before {
+    @apply left-1/2 top-1/2;
+    width: 10px;
+    height: 2px;
+    transform: translate(-5px, -1px);
+  }
+  .box::after {
+    @apply left-1/2 top-1/2;
+    height: 10px;
+    width: 2px;
+    transform: translate(-1px, -5px);
+  }
+</style>

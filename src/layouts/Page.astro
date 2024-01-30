@@ -1,0 +1,74 @@
+---
+import { IconLinks } from "@vyke/astro";
+import { SITE } from "../config";
+import Header from "../components/Header.astro";
+
+export type Props = {
+  title?: string;
+  author?: string;
+  description?: string;
+  ogImage?: string;
+  keywords?: Array<string>;
+  canonicalURL?: string;
+};
+
+const {
+  title = SITE.title,
+  author = SITE.author,
+  description = SITE.description,
+  ogImage = SITE.ogImage,
+  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+} = Astro.props;
+
+const socialImageURL = new URL(
+  ogImage ?? SITE.ogImage ?? "og.png",
+  Astro.url.origin
+).href;
+---
+
+<!doctype html>
+<html lang="en" data-theme="cupcake">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <IconLinks />
+
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+    <!-- General Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content={author} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImageURL} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:site" content="@albzrs" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+    <meta name="theme-color" content="" />
+  </head>
+  <body tabindex="0">
+    <Header />
+    <slot />
+
+    {
+      import.meta.env.PROD && (
+        <script
+          data-goatcounter="https://vyke-flowmodoro.goatcounter.com/count"
+          async
+          src="//gc.zgo.at/count.js"
+        />
+      )
+    }
+  </body>
+</html>

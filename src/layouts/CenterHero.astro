@@ -1,0 +1,21 @@
+---
+export type Props = {
+  class?: string;
+  direction?: "column" | "row";
+};
+
+const { class: className, direction = "column" } = Astro.props;
+---
+
+<main
+  class:list={[
+    "pb-10 px-6 relative w-full h-[90vh] flex justify-center items-center",
+    className,
+    {
+      "flex-col": direction === "column",
+      "flex-row": direction === "row",
+    },
+  ]}
+>
+  <slot />
+</main>

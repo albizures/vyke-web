@@ -1,0 +1,26 @@
+---
+export type Props = {
+  sideValue: "full" | "top" | "right" | "bottom" | "left";
+  borderStyleValue?:
+    | "none"
+    | "dotted"
+    | "solid"
+    | "inset"
+    | "dashed"
+    | "double"
+    | "ridge"
+    | "groove"
+    | "outset";
+};
+
+import BorderModifierContent from "./BorderModifierContent.astro";
+
+const { sideValue, borderStyleValue } = Astro.props;
+---
+
+<v-border-modifier class="block">
+  <BorderModifierContent
+    sideValue={sideValue}
+    borderStyleValue={borderStyleValue}
+  />
+</v-border-modifier>
