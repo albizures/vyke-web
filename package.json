@@ -1,5 +1,5 @@
 {
-  "name": "@vyke/flowmodoro",
+  "name": "@vyke/web",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:use": "knip"
   },
   "dependencies": {
     "@astrojs/check": "^0.4.1",
@@ -21,11 +22,12 @@
     "@vyke/results": "^0.1.0",
     "astro": "^4.2.6",
     "astro-icon": "^1.0.4",
-    "request-animation-frames": "^1.0.0",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
-    "daisyui": "^4.6.1"
+    "@types/node": "^20.11.10",
+    "daisyui": "^4.6.1",
+    "knip": "^4.2.3",
+    "typescript": "^5.3.3"
   }
 }
