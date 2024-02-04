@@ -2,18 +2,19 @@
 import Footer from "../components/Footer.astro";
 import CenterHero from "../layouts/CenterHero.astro";
 import Page from "../layouts/Page.astro";
-import { widthInput, heightInput } from "../entities/ids";
 import Button from "../components/Button.astro";
 import Icon from "../components/Icon.astro";
 import BorderModifierTemplate from "../components/borderModifier/BorderModifierTemplate.astro";
 import BorderModifier from "../components/borderModifier/BorderModifier.astro";
+import CssValueTemplate from "../components/cssValue/CssValueTemplate.astro";
+import CssValue from "../components/cssValue/CssValue.astro";
 ---
 
 <Page>
-  <CenterHero direction="row" class="max-w-6xl mx-auto">
-    <div class="flex-1 flex">
+  <CenterHero direction="row" class="max-w-6xl mx-auto justify-around">
+    <div class="flex flex-1 justify-around h-full bg-base-300">
       <div
-        class="flex border border-base-300 max-w-xs justify-center w-full items-center aspect-square shadow-inner bg-base-300"
+        class="flex flex-1 box-container border border-base-300 h-full justify-center items-center p-8 shadow-inner"
       >
         <div
           class="w-10 h-10 bg-primary shadow-lg border border-primary-content box relative"
@@ -21,34 +22,19 @@ import BorderModifier from "../components/borderModifier/BorderModifier.astro";
         </div>
       </div>
     </div>
-    <div class="flex-1 p-4">
-      <form class="global-form">
-        <input
-          type="range"
-          min="30"
-          max="200"
-          value="40"
-          name="width"
-          class={`range ${widthInput}`}
-        />
-        <input
-          type="range"
-          min="30"
-          max="200"
-          value="40"
-          name="height"
-          class=`range ${heightInput}`
-        />
-        <input
-          type="range"
-          min="00"
-          max="100"
-          value="40"
-          name="borderRadius"
-          class=`range`
-        />
+
+    <div class="p-4">
+      <form class="global-form flex justify-evenly">
+        <div class="">
+          <span class="pr-2">Width:</span>
+          <CssValue defaultValue={40} name="width" />
+        </div>
+        <div class="">
+          <span class="pr-2">Height:</span>
+          <CssValue defaultValue={40} name="height" />
+        </div>
       </form>
-      <div class="border border-base-200 rounded-lg p-2">
+      <div class="border border-base-200 rounded-lg p-2 mt-4">
         <Button
           class="mt-2 w-full"
           classId="new-modifier-btn"
@@ -59,19 +45,27 @@ import BorderModifier from "../components/borderModifier/BorderModifier.astro";
           <Icon icon="plus" />
         </Button>
         <form class="modifiers-form mt-2 space-y-2">
-          <BorderModifier sideValue="left" />
+          <BorderModifier sideValue="full" />
         </form>
       </div>
     </div>
   </CenterHero>
   <BorderModifierTemplate />
+  <CssValueTemplate />
   <Footer />
 </Page>
 
 <script>
   import { query, select, on } from "@vyke/dom";
   import { unwrap } from "@vyke/results";
-  import { BorderModifier } from "../components/borderModifier/borderModifier";
+  import {
+    createBorderModifier,
+    initBorderModifiers,
+  } from "../components/borderModifier/borderModifier";
+  import { initCssValues } from "../components/cssValue/cssValue";
+
+  initCssValues();
+  initBorderModifiers();
 
   const [box, globalForm] = unwrap(
     select(
@@ -87,22 +81,28 @@ import BorderModifier from "../components/borderModifier/BorderModifier.astro";
   );
 
   on(newModifierBtn, "click", () => {
-    modifiersForm.append(document.createElement(BorderModifier.vname));
+    modifiersForm.append(createBorderModifier());
+    applyValues();
   });
 
   function applyValues() {
     const globalData = new FormData(globalForm);
     const modifiersData = new FormData(modifiersForm);
     box.removeAttribute("style");
-
     for (const [name, field] of [...globalData, ...modifiersData]) {
-      switch (name) {
+      const [fieldName, type] = name.split(":") as [string, ...Array<string>];
+
+      if (type === "unit") {
+        continue;
+      }
+
+      switch (fieldName) {
         case "borderStyle":
         case "borderTopStyle":
         case "borderRightStyle":
         case "borderBottomStyle":
         case "borderLeftStyle":
-          setStyle(box, name, `${field}`);
+          setStyle(box, fieldName, `${field}`);
           break;
         case "width":
         case "height":
@@ -112,9 +112,13 @@ import BorderModifier from "../components/borderModifier/BorderModifier.astro";
         case "borderBottomWidth":
         case "borderLeftWidth":
         case "borderRadius":
-          setStyle(box, name, `${field}px`);
-          break;
-        default:
+          const unit = type
+            ? globalData.get(`${fieldName}:unit`) ||
+              modifiersData.get(`${fieldName}:unit`) ||
+              "px"
+            : "px";
+          const value = `${field}${unit}`;
+          setStyle(box, fieldName, value);
           break;
       }
     }
@@ -160,5 +164,11 @@ import BorderModifier from "../components/borderModifier/BorderModifier.astro";
     height: 10px;
     width: 2px;
     transform: translate(-1px, -5px);
+  }
+
+  .box-container {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.3) 1px, transparent 0);
+    background-size: 40px 40px;
+    background-position: -19px -19px;
   }
 </style>

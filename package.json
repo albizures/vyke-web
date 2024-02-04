@@ -17,17 +17,18 @@
     "@iconify-json/fa-brands": "^1.1.8",
     "@iconify-json/fa-solid": "^1.1.8",
     "@tailwindcss/typography": "^0.5.10",
-    "@vyke/astro": "^0.0.5",
-    "@vyke/dom": "^0.0.4",
+    "@vyke/astro": "^0.0.6",
+    "@vyke/dom": "^0.0.9",
     "@vyke/results": "^0.1.0",
-    "astro": "^4.2.6",
-    "astro-icon": "^1.0.4",
-    "tailwindcss": "^3.4.1"
+    "astro": "^4.3.2",
+    "astro-icon": "^1.1.0",
+    "tailwindcss": "^3.4.1",
+    "throttleit": "^2.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.10",
+    "@types/node": "^20.11.16",
     "daisyui": "^4.6.1",
-    "knip": "^4.2.3",
+    "knip": "^4.3.1",
     "typescript": "^5.3.3"
   }
 }

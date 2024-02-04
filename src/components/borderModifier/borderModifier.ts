@@ -1,67 +1,68 @@
 import { on, query, select, selectIn } from "@vyke/dom";
 import { unwrap } from "@vyke/results";
 import { borderStyle, borderWidth } from "./borderModifierHelpers";
+import { createDataAttr } from "../../entities/dataId";
+import { createComponent } from "../../entities/component";
+import { initCssValues } from "../cssValue/cssValue";
 
-export class BorderModifier extends HTMLElement {
-  static vname = "v-border-modifier";
+const side = createDataAttr<HTMLDivElement>(["side", "side"]);
+const borderModifier = createDataAttr<HTMLFieldSetElement>([
+  "border-modifier",
+  "borderModifier",
+]);
+const allBorderModifiers = borderModifier.all();
 
-  offEvents: Array<() => void> = [];
+export function initBorderModifier(root: HTMLFieldSetElement) {
+  const offEvents: Array<() => void> = [];
+  const [
+    removeModifierBtn,
+    miniBox,
+    sideSelect,
+    borderStyleSelect,
+    borderWidthInput,
+  ] = unwrap(
+    selectIn(
+      root,
+      query<HTMLButtonElement>(".remove-modifier-btn"),
+      query<HTMLDivElement>(".mini-box"),
+      query<HTMLButtonElement>(".side-select"),
+      borderStyle,
+      borderWidth
+    )
+  );
 
-  constructor() {
-    super();
-  }
+  side.set(miniBox, sideSelect.value);
 
-  connectedCallback() {
-    const root = this;
+  offEvents.push(
+    on(removeModifierBtn, "click", (event) => {
+      event.preventDefault(); // avoid the submit event
+      event.stopPropagation();
+      root.remove();
+    }),
+    on(sideSelect, "change", () => {
+      const sideValue = sideSelect.value;
 
-    const [template] = unwrap(
-      select(query<HTMLTemplateElement>(`#v-border-modifier-template`))
-    );
+      side.set(miniBox, sideValue);
+      borderStyleSelect.name = borderStyle.name(sideValue);
+      borderWidthInput.name = borderWidth.name(sideValue);
+    })
+  );
 
-    root.style.display = "block";
+  initCssValues(root);
+}
 
-    let templateContent = template.content;
+export function initBorderModifiers(container: ParentNode = document) {
+  const [elements] = unwrap(selectIn(container, allBorderModifiers));
 
-    const isEmpty = root.childNodes.length === 0;
-
-    if (isEmpty) {
-      root.append(templateContent.cloneNode(true));
-    }
-
-    const [
-      removeModifierBtn,
-      miniBox,
-      sideSelect,
-      borderStyleSelect,
-      borderWidthInput,
-    ] = unwrap(
-      selectIn(
-        root,
-        query<HTMLButtonElement>(".remove-modifier-btn"),
-        query<HTMLDivElement>(".mini-box"),
-        query<HTMLButtonElement>(".side-select"),
-        borderStyle,
-        borderWidth
-      )
-    );
-
-    miniBox.dataset.side = sideSelect.value;
-
-    root.offEvents.push(
-      on(removeModifierBtn, "click", (event) => {
-        event.preventDefault(); // avoid the submit event
-        event.stopPropagation();
-        root.remove();
-      }),
-      on(sideSelect, "change", () => {
-        const sideValue = sideSelect.value;
-
-        miniBox.dataset.side = sideSelect.value;
-        borderStyleSelect.name = borderStyle.name(sideValue);
-        borderWidthInput.name = borderWidth.name(sideValue);
-      })
-    );
+  for (const element of elements) {
+    initBorderModifier(element);
   }
 }
 
-customElements.define(BorderModifier.vname, BorderModifier);
+export function createBorderModifier() {
+  const root = createComponent(`#v-border-modifier-template`, borderModifier);
+
+  initBorderModifier(root);
+
+  return root;
+}

@@ -13,7 +13,7 @@ dependencies:
     version: 3.0.5
   '@astrojs/tailwind':
     specifier: ^5.1.0
-    version: 5.1.0(astro@4.2.6)(tailwindcss@3.4.1)
+    version: 5.1.0(astro@4.3.2)(tailwindcss@3.4.1)
   '@iconify-json/fa-brands':
     specifier: ^1.1.8
     version: 1.1.8
@@ -24,34 +24,37 @@ dependencies:
     specifier: ^0.5.10
     version: 0.5.10(tailwindcss@3.4.1)
   '@vyke/astro':
-    specifier: ^0.0.5
-    version: 0.0.5(@vyke/dom@0.0.4)(@vyke/results@0.1.0)
+    specifier: ^0.0.6
+    version: 0.0.6(@vyke/dom@0.0.9)(@vyke/results@0.1.0)
   '@vyke/dom':
-    specifier: ^0.0.4
-    version: 0.0.4(@vyke/results@0.1.0)
+    specifier: ^0.0.9
+    version: 0.0.9(@vyke/results@0.1.0)
   '@vyke/results':
     specifier: ^0.1.0
     version: 0.1.0
   astro:
-    specifier: ^4.2.6
-    version: 4.2.6(@types/node@20.11.10)(typescript@5.3.3)
+    specifier: ^4.3.2
+    version: 4.3.2(@types/node@20.11.16)(typescript@5.3.3)
   astro-icon:
-    specifier: ^1.0.4
-    version: 1.0.4
+    specifier: ^1.1.0
+    version: 1.1.0
   tailwindcss:
     specifier: ^3.4.1
     version: 3.4.1
+  throttleit:
+    specifier: ^2.0.0
+    version: 2.0.0
 
 devDependencies:
   '@types/node':
-    specifier: ^20.11.10
-    version: 20.11.10
+    specifier: ^20.11.16
+    version: 20.11.16
   daisyui:
     specifier: ^4.6.1
     version: 4.6.1(postcss@8.4.33)
   knip:
-    specifier: ^4.2.3
-    version: 4.2.3(@types/node@20.11.10)(typescript@5.3.3)
+    specifier: ^4.3.1
+    version: 4.3.1(@types/node@20.11.16)(typescript@5.3.3)
   typescript:
     specifier: ^5.3.3
     version: 5.3.3
@@ -145,8 +148,8 @@ packages:
       - typescript
     dev: false
 
-  /@astrojs/markdown-remark@4.2.0:
-    resolution: {integrity: sha512-qQB+LoxmIqzkhLXaQAzfzlBxZU1jeQYailsifurz89WeY0Q8ywIj8uQQSyqxb7rPPg3ZfdNdxsN9lF5UaCRn0w==}
+  /@astrojs/markdown-remark@4.2.1:
+    resolution: {integrity: sha512-2RQBIwrq+2qPYtp99bH+eL5hfbK0BoxXla85lHsRpIX/IsGqFrPX6pXI2cbWPihBwGbKCdxS6uZNX2QerZWwpQ==}
     dependencies:
       '@astrojs/prism': 3.0.0
       github-slugger: 2.0.0
@@ -180,13 +183,13 @@ packages:
       zod: 3.22.4
     dev: false
 
-  /@astrojs/tailwind@5.1.0(astro@4.2.6)(tailwindcss@3.4.1):
+  /@astrojs/tailwind@5.1.0(astro@4.3.2)(tailwindcss@3.4.1):
     resolution: {integrity: sha512-BJoCDKuWhU9FT2qYg+fr6Nfb3qP4ShtyjXGHKA/4mHN94z7BGcmauQK23iy+YH5qWvTnhqkd6mQPQ1yTZTe9Ig==}
     peerDependencies:
       astro: ^3.0.0 || ^4.0.0
       tailwindcss: ^3.0.24
     dependencies:
-      astro: 4.2.6(@types/node@20.11.10)(typescript@5.3.3)
+      astro: 4.3.2(@types/node@20.11.16)(typescript@5.3.3)
       autoprefixer: 10.4.16(postcss@8.4.33)
       postcss: 8.4.33
       postcss-load-config: 4.0.2(postcss@8.4.33)
@@ -1154,7 +1157,7 @@ packages:
   /@types/cheerio@0.22.35:
     resolution: {integrity: sha512-yD57BchKRvTV+JD53UZ6PD8KWY5g5rvvMLRnZR3EQBCZXiDT/HR+pKpMzFGlWNhFrXlo7VPZXtKvIEwZkAWOIA==}
     dependencies:
-      '@types/node': 20.11.10
+      '@types/node': 20.11.16
     dev: false
 
   /@types/debug@4.1.12:
@@ -1193,8 +1196,8 @@ packages:
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
     dev: false
 
-  /@types/node@20.11.10:
-    resolution: {integrity: sha512-rZEfe/hJSGYmdfX9tvcPMYeYPW2sNl50nsw4jZmRcaG0HIAb0WYEpsB05GOb53vjqpyE9GUhlDQ4jLSoB5q9kg==}
+  /@types/node@20.11.16:
+    resolution: {integrity: sha512-gKb0enTmRCzXSSUJDq6/sPcqrfCv2mkkG6Jt/clpn5eiCbKTY+SgZUxo+p8ZKMof5dCp9vHQUAB7wOUTod22wQ==}
     dependencies:
       undici-types: 5.26.5
 
@@ -1205,13 +1208,13 @@ packages:
   /@types/sax@1.2.7:
     resolution: {integrity: sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==}
     dependencies:
-      '@types/node': 20.11.10
+      '@types/node': 20.11.16
     dev: false
 
   /@types/tar@6.1.10:
     resolution: {integrity: sha512-60ZO+W0tRKJ3ggdzJKp75xKVlNogKYMqGvr2bMH/+k3T0BagfYTnbmVDFMJB1BFttz6yRgP5MDGP27eh7brrqw==}
     dependencies:
-      '@types/node': 20.11.10
+      '@types/node': 20.11.16
       minipass: 4.2.8
     dev: false
 
@@ -1227,7 +1230,7 @@ packages:
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
     requiresBuild: true
     dependencies:
-      '@types/node': 20.11.10
+      '@types/node': 20.11.16
     dev: false
     optional: true
 
@@ -1305,18 +1308,18 @@ packages:
     resolution: {integrity: sha512-JT5CvrIYYCrmB+dCana8sUqJEcGB1ZDXNLMQ2+42bW995WmNoenijWMUdZfwmuQUTQcEVVIa2OecZzTYWUW9Cg==}
     dev: false
 
-  /@vyke/astro@0.0.5(@vyke/dom@0.0.4)(@vyke/results@0.1.0):
-    resolution: {integrity: sha512-PPbR71cycNrDBOnbib4aF1kNTO1pWEXeZws4gMEeDWMUlKdjdwTZNiqMEpiyyVVhsHI3pQGweP8BwloF9Vpnhg==}
+  /@vyke/astro@0.0.6(@vyke/dom@0.0.9)(@vyke/results@0.1.0):
+    resolution: {integrity: sha512-Smg/sqUS/5LZZTnUXEGJETloZS9slUmiqLX/uDI1y4pq6Db2nmhsy33k5UMXoOJ1sKpDloQEf4Fjyashc8+Wng==}
     peerDependencies:
-      '@vyke/dom': ^0.0.4
+      '@vyke/dom': ^0.0.*
       '@vyke/results': ^0.1.0
     dependencies:
-      '@vyke/dom': 0.0.4(@vyke/results@0.1.0)
+      '@vyke/dom': 0.0.9(@vyke/results@0.1.0)
       '@vyke/results': 0.1.0
     dev: false
 
-  /@vyke/dom@0.0.4(@vyke/results@0.1.0):
-    resolution: {integrity: sha512-lpqAjaQITN8Uh1wElTSBak7GlkO9DqsGloCreXS3ilnmNNxQG+QQILandAlMJdF6VA9SdZweqFue0bktiREc3g==}
+  /@vyke/dom@0.0.9(@vyke/results@0.1.0):
+    resolution: {integrity: sha512-t+27WVxtN/wrI6KqIa91/Vy2kTgIKZCCBUpXrw4GMacgyei8/TCVhO+ed7GLi4vFzKOe/G6qbG/WMK8Z6qy5HA==}
     peerDependencies:
       '@vyke/results': ^0.1.*
     dependencies:
@@ -1429,8 +1432,8 @@ packages:
       is-number: 4.0.0
     dev: true
 
-  /astro-icon@1.0.4:
-    resolution: {integrity: sha512-z/9lqZjMldbT4cSmgVQLAiUFq+8yJuxVfHmTMfHOZ1EYq54AMaot9cDxfczLOVo65kz3VwymAD6r2EC5Zp6XrA==}
+  /astro-icon@1.1.0:
+    resolution: {integrity: sha512-Nksc09p7UuHeMcPNS9w1pKqRw3+wEmmh0A3FJW+FNXvqaeWI4RLvD1MCWErpY3Z5Cvad317rvLdik/Hg8GEk8Q==}
     dependencies:
       '@iconify/tools': 3.0.7
       '@iconify/types': 2.0.0
@@ -1439,14 +1442,14 @@ packages:
       - supports-color
     dev: false
 
-  /astro@4.2.6(@types/node@20.11.10)(typescript@5.3.3):
-    resolution: {integrity: sha512-k5i8pEI2r45JTkoE0I4JyhOH/dZFpjUA4AONbRd9Gr1LtnGOhKHDftiYOrRLUGx91q7BzoW3DOk+h4yZM4yC3g==}
+  /astro@4.3.2(@types/node@20.11.16)(typescript@5.3.3):
+    resolution: {integrity: sha512-SJotHzKG/I32ruYWItMRJjtmNQh14mVS7kahu3XfYyxvo6nx08PGJBTSPbqPrW1sjeQPHwcpVDFx3yMMK2kaxQ==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
       '@astrojs/compiler': 2.5.1
       '@astrojs/internal-helpers': 0.2.1
-      '@astrojs/markdown-remark': 4.2.0
+      '@astrojs/markdown-remark': 4.2.1
       '@astrojs/telemetry': 3.0.4
       '@babel/core': 7.23.7
       '@babel/generator': 7.23.6
@@ -1503,7 +1506,7 @@ packages:
       tsconfck: 3.0.1(typescript@5.3.3)
       unist-util-visit: 5.0.0
       vfile: 6.0.1
-      vite: 5.0.12(@types/node@20.11.10)
+      vite: 5.0.12(@types/node@20.11.16)
       vitefu: 0.2.5(vite@5.0.12)
       which-pm: 2.1.1
       yargs-parser: 21.1.1
@@ -2939,8 +2942,8 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  /knip@4.2.3(@types/node@20.11.10)(typescript@5.3.3):
-    resolution: {integrity: sha512-X1OE/Uks6hIAXmaxrJn/mjywFRwpeXr11wAtGNT+n7R5vSWOUEfVbtG2C4wAMDu6AfBx5tVUGLm5+2eK5rwNEw==}
+  /knip@4.3.1(@types/node@20.11.16)(typescript@5.3.3):
+    resolution: {integrity: sha512-NqH3XlnZnG+SmjEfIl3zlY4ZQmt1YkYq/YoEBmG70HuYSWknM9vgNyLfnTA9wcgyxi5NQtlZQZWk+2KwPqR71A==}
     engines: {node: '>=18.6.0'}
     hasBin: true
     peerDependencies:
@@ -2954,7 +2957,7 @@ packages:
       '@pnpm/logger': 5.0.0
       '@pnpm/workspace.pkgs-graph': 2.0.14(@pnpm/logger@5.0.0)
       '@snyk/github-codeowners': 1.1.0
-      '@types/node': 20.11.10
+      '@types/node': 20.11.16
       '@types/picomatch': 2.3.3
       easy-table: 1.2.0
       fast-glob: 3.3.2
@@ -4900,6 +4903,11 @@ packages:
       any-promise: 1.3.0
     dev: false
 
+  /throttleit@2.0.0:
+    resolution: {integrity: sha512-9VImOCJfOMzgBNJIa8ifGnJbAY3XGkl+mGV/+N69+L07QXrg6B6FqPI+2MCqdO5Ojega5BsA94zKHh2rHsQW9Q==}
+    engines: {node: '>=18'}
+    dev: false
+
   /through2@4.0.2:
     resolution: {integrity: sha512-iOqSav00cVxEEICeD7TjLB1sueEL+81Wpzp2bY17uZjZN0pWZPuo4suZ/61VujxmqSGFfgOcNuTZ85QJwNZQpw==}
     dependencies:
@@ -5193,7 +5201,7 @@ packages:
       vfile-message: 4.0.2
     dev: false
 
-  /vite@5.0.12(@types/node@20.11.10):
+  /vite@5.0.12(@types/node@20.11.16):
     resolution: {integrity: sha512-4hsnEkG3q0N4Tzf1+t6NdN9dg/L3BM+q8SWgbSPnJvrgH2kgdyzfVJwbR1ic69/4uMJJ/3dqDZZE5/WwqW8U1w==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -5221,7 +5229,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.11.10
+      '@types/node': 20.11.16
       esbuild: 0.19.11
       postcss: 8.4.33
       rollup: 4.9.4
@@ -5237,7 +5245,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 5.0.12(@types/node@20.11.10)
+      vite: 5.0.12(@types/node@20.11.16)
     dev: false
 
   /vlq@0.2.3:
