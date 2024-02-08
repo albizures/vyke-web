@@ -8,9 +8,13 @@ import BorderModifierTemplate from "../components/borderModifier/BorderModifierT
 import BorderModifier from "../components/borderModifier/BorderModifier.astro";
 import CssValueTemplate from "../components/cssValue/CssValueTemplate.astro";
 import CssValue from "../components/cssValue/CssValue.astro";
+import BorderRadius from "../components/borderRadius/BorderRadius.astro";
 ---
 
 <Page>
+  <div class="text-center">
+    <BorderRadius defaultValue={0} sideValue="bottomLeft" />
+  </div>
   <CenterHero direction="row" class="max-w-6xl mx-auto justify-around">
     <div class="flex flex-1 justify-around h-full bg-base-300">
       <div
@@ -36,13 +40,13 @@ import CssValue from "../components/cssValue/CssValue.astro";
       </form>
       <div class="border border-base-200 rounded-lg p-2 mt-4">
         <Button
-          class="mt-2 w-full"
+          class="mt-2 w-full uppercase"
           classId="new-modifier-btn"
           modifier="outline"
           type="ghost"
           size="xs"
         >
-          <Icon icon="plus" />
+          add border<Icon icon="plus" />
         </Button>
         <form class="modifiers-form mt-2 space-y-2">
           <BorderModifier sideValue="full" />
@@ -56,6 +60,7 @@ import CssValue from "../components/cssValue/CssValue.astro";
 </Page>
 
 <script>
+  import debounce from "debounce";
   import { query, select, on } from "@vyke/dom";
   import { unwrap } from "@vyke/results";
   import {
@@ -63,9 +68,13 @@ import CssValue from "../components/cssValue/CssValue.astro";
     initBorderModifiers,
   } from "../components/borderModifier/borderModifier";
   import { initCssValues } from "../components/cssValue/cssValue";
+  import { initAllNumberValues } from "../components/numberValue/numberValue";
+  import { initAllBorderRadius } from "../components/borderRadius/borderRadius";
 
   initCssValues();
   initBorderModifiers();
+  initAllNumberValues();
+  initAllBorderRadius();
 
   const [box, globalForm] = unwrap(
     select(
@@ -86,6 +95,7 @@ import CssValue from "../components/cssValue/CssValue.astro";
   });
 
   function applyValues() {
+    console.log("changes!");
     const globalData = new FormData(globalForm);
     const modifiersData = new FormData(modifiersForm);
     box.removeAttribute("style");
@@ -124,12 +134,14 @@ import CssValue from "../components/cssValue/CssValue.astro";
     }
   }
 
+  const debouncedApplyValues = debounce(applyValues);
+
   on(globalForm, "change", (_event) => {
-    applyValues();
+    debouncedApplyValues();
   });
 
   on(modifiersForm, "change", () => {
-    applyValues();
+    debouncedApplyValues();
   });
 
   applyValues();

@@ -22,6 +22,8 @@
     "@vyke/results": "^0.1.0",
     "astro": "^4.3.2",
     "astro-icon": "^1.1.0",
+    "camelcase": "^8.0.0",
+    "debounce": "^2.0.0",
     "tailwindcss": "^3.4.1",
     "throttleit": "^2.0.0"
   },

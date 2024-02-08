@@ -1,15 +1,12 @@
-import { on, query, select, selectIn } from "@vyke/dom";
+import { on, query, selectIn } from "@vyke/dom";
 import { unwrap } from "@vyke/results";
 import { borderStyle, borderWidth } from "./borderModifierHelpers";
 import { createDataAttr } from "../../entities/dataId";
 import { createComponent } from "../../entities/component";
-import { initCssValues } from "../cssValue/cssValue";
+import { cssValue, initCssValues } from "../cssValue/cssValue";
 
-const side = createDataAttr<HTMLDivElement>(["side", "side"]);
-const borderModifier = createDataAttr<HTMLFieldSetElement>([
-  "border-modifier",
-  "borderModifier",
-]);
+const side = createDataAttr<HTMLDivElement>("side");
+const borderModifier = createDataAttr<HTMLFieldSetElement>("border-modifier");
 const allBorderModifiers = borderModifier.all();
 
 export function initBorderModifier(root: HTMLFieldSetElement) {
@@ -19,7 +16,7 @@ export function initBorderModifier(root: HTMLFieldSetElement) {
     miniBox,
     sideSelect,
     borderStyleSelect,
-    borderWidthInput,
+    widthCssValue,
   ] = unwrap(
     selectIn(
       root,
@@ -27,7 +24,7 @@ export function initBorderModifier(root: HTMLFieldSetElement) {
       query<HTMLDivElement>(".mini-box"),
       query<HTMLButtonElement>(".side-select"),
       borderStyle,
-      borderWidth
+      cssValue
     )
   );
 
@@ -42,9 +39,9 @@ export function initBorderModifier(root: HTMLFieldSetElement) {
     on(sideSelect, "change", () => {
       const sideValue = sideSelect.value;
 
-      side.set(miniBox, sideValue);
+      cssValue.set(widthCssValue, borderWidth.name(sideValue));
       borderStyleSelect.name = borderStyle.name(sideValue);
-      borderWidthInput.name = borderWidth.name(sideValue);
+      side.set(miniBox, sideValue);
     })
   );
 

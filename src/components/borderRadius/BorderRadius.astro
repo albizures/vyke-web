@@ -1,0 +1,46 @@
+---
+import CssValue from "../cssValue/CssValue.astro";
+
+export type Props = {
+  defaultValue?: number;
+  sideValue: "full" | "topLeft" | "topRight" | "bottomRight" | "bottomLeft";
+};
+
+const { defaultValue = 0, sideValue } = Astro.props;
+---
+
+<div data-border-radius={sideValue} class="join items-[normal] inline-flex">
+  <div
+    class="join-item px-2 input input-bordered input-xs flex justify-center items-center"
+  >
+    <div data-side={sideValue} class="h-4 border aspect-square mini-box"></div>
+  </div>
+  <select
+    data-border-radius-side
+    name={sideValue}
+    class="select select-bordered select-xs join-item"
+  >
+    <option selected>full</option>
+    <option value="topLeft">top left</option>
+    <option value="topRight">top right</option>
+    <option value="bottomRight">bottom right</option>
+    <option value="bottomLeft">bottom left</option>
+  </select><CssValue defaultValue={defaultValue} name={sideValue} />
+</div>
+<style>
+  .mini-box[data-side="full"] {
+    @apply border-secondary border-2;
+  }
+  .mini-box[data-side="topLeft"] {
+    @apply border-l-secondary border-t-secondary border-t-2 border-l-2;
+  }
+  .mini-box[data-side="topRight"] {
+    @apply border-r-secondary border-t-secondary border-t-2 border-r-2;
+  }
+  .mini-box[data-side="bottomRight"] {
+    @apply border-r-secondary border-b-secondary border-b-2 border-r-2;
+  }
+  .mini-box[data-side="bottomLeft"] {
+    @apply border-l-secondary border-b-secondary border-b-2 border-l-2;
+  }
+</style>

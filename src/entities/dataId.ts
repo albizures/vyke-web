@@ -1,7 +1,8 @@
+import camelcase from "camelcase";
 import { type QueryType, type TypeClass } from "@vyke/dom";
 
 export type DataAttr<TElement extends HTMLOrSVGElement> = {
-  attr: string;
+  attrName: string;
   selector: string;
   type: QueryType;
   instance?: TypeClass<TElement>;
@@ -9,6 +10,7 @@ export type DataAttr<TElement extends HTMLOrSVGElement> = {
   from: (target: TElement) => string | undefined;
   set: (target: TElement, value: unknown) => void;
   all: () => AllDataQuery<TElement>;
+  attr: (value?: unknown) => Record<string, string>;
 };
 
 export type AllDataQuery<TElement extends HTMLOrSVGElement> = {
@@ -18,16 +20,16 @@ export type AllDataQuery<TElement extends HTMLOrSVGElement> = {
 };
 
 export function createDataAttr<TElement extends HTMLOrSVGElement>(
-  names: [attr: string, prop: string]
+  attrName: string
 ): DataAttr<TElement> {
-  const [attrName, prop] = names;
+  const prop = camelcase(attrName);
 
   const attr = `data-${attrName}`;
   const selector = `[${attr}]`;
 
   const data: DataAttr<TElement> = {
     selector,
-    attr,
+    attrName: attr,
     type: "one",
     toString() {
       return attr;
@@ -37,6 +39,11 @@ export function createDataAttr<TElement extends HTMLOrSVGElement>(
     },
     from(target: TElement) {
       return target.dataset[prop];
+    },
+    attr(value: unknown = "") {
+      return {
+        [attr]: `${value}`,
+      };
     },
     all() {
       const dataAll: AllDataQuery<TElement> = {

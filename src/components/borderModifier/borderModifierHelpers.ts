@@ -1,10 +1,10 @@
 import type { Query } from "@vyke/dom";
 
-function capitalize(value: string) {
+export function capitalize(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
-function getNamePart(sideValue: string) {
+export function getNamePart(sideValue: string) {
   return sideValue === "full" ? "" : capitalize(sideValue);
 }
 

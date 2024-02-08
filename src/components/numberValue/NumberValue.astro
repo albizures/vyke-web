@@ -1,0 +1,23 @@
+---
+export type Props = {
+  name: string;
+  defaultValue: number;
+  placeholder?: string;
+};
+
+import { numberValue } from "./numberValue";
+
+const { name, defaultValue, placeholder } = Astro.props;
+---
+
+<input
+  name={name}
+  value={defaultValue}
+  size="1"
+  class:list={[
+    "input input-bordered input-xs",
+    "text-right w-auto max-w-[50%] join-item cursor-ns-resize",
+  ]}
+  placeholder={placeholder}
+  {...numberValue.attr(name)}
+/>

@@ -1,27 +1,21 @@
 ---
 import type { CssValueProps } from "./cssValue";
+import NumberValue from "../numberValue/NumberValue.astro";
 
 export type Props = CssValueProps;
 
-const { name, placeholder, defaultValue, valueClassId, unitClassId } =
-  Astro.props;
+const { name, placeholder, defaultValue } = Astro.props;
 ---
 
 <div data-css-value={name} class="join items-[normal] inline-flex">
-  <input
+  <NumberValue
     name={`${name}:value`}
-    value={defaultValue}
-    data-css-value-value
-    size="1"
-    class:list={[
-      "input text-right input-bordered w-auto max-w-[50%] input-xs join-item cursor-ns-resize v-css-value-input",
-      valueClassId,
-    ]}
+    defaultValue={defaultValue ?? 10}
     placeholder={placeholder}
   /><select
     data-css-value-unit
     name={`${name}:unit`}
-    class:list={["select select-bordered select-xs join-item", unitClassId]}
+    class="select select-bordered select-xs join-item"
   >
     <option selected>px</option>
     <option>%</option>
