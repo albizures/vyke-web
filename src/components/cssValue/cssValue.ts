@@ -36,7 +36,6 @@ function initCssValue(root: HTMLDivElement) {
   initAllNumberValues(root);
 
   const name = cssValue.from(root);
-  console.log("original", name);
 
   const [unitSelect, valueInput] = unwrap(selectIn(root, unitId, numberValue));
 

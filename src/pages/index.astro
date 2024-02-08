@@ -9,19 +9,18 @@ import BorderModifier from "../components/borderModifier/BorderModifier.astro";
 import CssValueTemplate from "../components/cssValue/CssValueTemplate.astro";
 import CssValue from "../components/cssValue/CssValue.astro";
 import BorderRadius from "../components/borderRadius/BorderRadius.astro";
+import BorderRadiusTemplate from "../components/borderRadius/BorderRadiusTemplate.astro";
+import { Section } from "@vyke/astro";
 ---
 
 <Page>
-  <div class="text-center">
-    <BorderRadius defaultValue={0} sideValue="bottomLeft" />
-  </div>
   <CenterHero direction="row" class="max-w-6xl mx-auto justify-around">
-    <div class="flex flex-1 justify-around h-full bg-base-300">
+    <div class="flex flex-1 justify-around h-full bg-base-200">
       <div
         class="flex flex-1 box-container border border-base-300 h-full justify-center items-center p-8 shadow-inner"
       >
         <div
-          class="w-10 h-10 bg-primary shadow-lg border border-primary-content box relative"
+          class="w-10 h-10 bg-primary shadow-lg border-primary-content box relative"
         >
         </div>
       </div>
@@ -52,10 +51,32 @@ import BorderRadius from "../components/borderRadius/BorderRadius.astro";
           <BorderModifier sideValue="full" />
         </form>
       </div>
+      <div class="border border-base-200 rounded-lg p-2 mt-2">
+        <Button
+          class="mt-2 w-full uppercase"
+          classId="new-radius-btn"
+          modifier="outline"
+          type="ghost"
+          size="xs"
+        >
+          add border radius<Icon icon="plus" />
+        </Button>
+
+        <form class="radius-form mt-2 space-y-2">
+          <BorderRadius defaultValue={0} sideValue="full" />
+        </form>
+      </div>
     </div>
   </CenterHero>
+  <Section class="flex justify-center">
+    <pre
+      class="bg-base-200 hover:bg-base-300 text-base-content rounded-lg p-4 pr-10"
+      data-code>
+    </pre>
+  </Section>
   <BorderModifierTemplate />
   <CssValueTemplate />
+  <BorderRadiusTemplate />
   <Footer />
 </Page>
 
@@ -69,17 +90,21 @@ import BorderRadius from "../components/borderRadius/BorderRadius.astro";
   } from "../components/borderModifier/borderModifier";
   import { initCssValues } from "../components/cssValue/cssValue";
   import { initAllNumberValues } from "../components/numberValue/numberValue";
-  import { initAllBorderRadius } from "../components/borderRadius/borderRadius";
+  import {
+    createBorderRadius,
+    initAllBorderRadius,
+  } from "../components/borderRadius/borderRadius";
 
   initCssValues();
   initBorderModifiers();
   initAllNumberValues();
   initAllBorderRadius();
 
-  const [box, globalForm] = unwrap(
+  const [box, globalForm, codeElement] = unwrap(
     select(
       query<HTMLDivElement>(".box"),
-      query<HTMLFormElement>(".global-form")
+      query<HTMLFormElement>(".global-form"),
+      query<HTMLPreElement>("[data-code]")
     )
   );
   const [newModifierBtn, modifiersForm] = unwrap(
@@ -88,18 +113,34 @@ import BorderRadius from "../components/borderRadius/BorderRadius.astro";
       query<HTMLFormElement>(".modifiers-form")
     )
   );
+  const [newRadiusBtn, radiusForm] = unwrap(
+    select(
+      query<HTMLButtonElement>(".new-radius-btn"),
+      query<HTMLFormElement>(".radius-form")
+    )
+  );
 
   on(newModifierBtn, "click", () => {
     modifiersForm.append(createBorderModifier());
     applyValues();
   });
 
+  on(newRadiusBtn, "click", () => {
+    radiusForm.append(createBorderRadius());
+    applyValues();
+  });
+
   function applyValues() {
-    console.log("changes!");
     const globalData = new FormData(globalForm);
     const modifiersData = new FormData(modifiersForm);
+    const radiusData = new FormData(radiusForm);
     box.removeAttribute("style");
-    for (const [name, field] of [...globalData, ...modifiersData]) {
+
+    for (const [name, field] of [
+      ...globalData,
+      ...modifiersData,
+      ...radiusData,
+    ]) {
       const [fieldName, type] = name.split(":") as [string, ...Array<string>];
 
       if (type === "unit") {
@@ -122,6 +163,10 @@ import BorderRadius from "../components/borderRadius/BorderRadius.astro";
         case "borderBottomWidth":
         case "borderLeftWidth":
         case "borderRadius":
+        case "borderTopLeftRadius":
+        case "borderTopRightRadius":
+        case "borderBottomRightRadius":
+        case "borderBottomLeftRadius":
           const unit = type
             ? globalData.get(`${fieldName}:unit`) ||
               modifiersData.get(`${fieldName}:unit`) ||
@@ -132,6 +177,23 @@ import BorderRadius from "../components/borderRadius/BorderRadius.astro";
           break;
       }
     }
+
+    codeElement.innerHTML = formatStyleCode(box.getAttribute("style") ?? "");
+  }
+
+  function formatStyleCode(origin: string) {
+    return [
+      `.<span class="text-primary">box</span> {`,
+      ...origin
+        .replaceAll(/; /g, ";\n")
+        .split("\n")
+        .map((line) => {
+          return `\t${line}`;
+        }),
+      "}",
+    ]
+      .join("\n")
+      .trim();
   }
 
   const debouncedApplyValues = debounce(applyValues);
@@ -141,6 +203,10 @@ import BorderRadius from "../components/borderRadius/BorderRadius.astro";
   });
 
   on(modifiersForm, "change", () => {
+    debouncedApplyValues();
+  });
+
+  on(radiusForm, "change", () => {
     debouncedApplyValues();
   });
 
@@ -179,7 +245,10 @@ import BorderRadius from "../components/borderRadius/BorderRadius.astro";
   }
 
   .box-container {
-    background-image: radial-gradient(rgba(0, 0, 0, 0.3) 1px, transparent 0);
+    background-image: radial-gradient(
+      var(--fallback-bc, oklch(var(--p) / 0.5)) 1px,
+      transparent 0
+    );
     background-size: 40px 40px;
     background-position: -19px -19px;
   }
