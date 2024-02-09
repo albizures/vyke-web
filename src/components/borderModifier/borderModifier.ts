@@ -10,7 +10,6 @@ const borderModifier = createDataAttr<HTMLFieldSetElement>("border-modifier");
 const allBorderModifiers = borderModifier.all();
 
 export function initBorderModifier(root: HTMLFieldSetElement) {
-  const offEvents: Array<() => void> = [];
   const [
     removeModifierBtn,
     miniBox,
@@ -30,20 +29,19 @@ export function initBorderModifier(root: HTMLFieldSetElement) {
 
   side.set(miniBox, sideSelect.value);
 
-  offEvents.push(
-    on(removeModifierBtn, "click", (event) => {
-      event.preventDefault(); // avoid the submit event
-      event.stopPropagation();
-      root.remove();
-    }),
-    on(sideSelect, "change", () => {
-      const sideValue = sideSelect.value;
+  on(removeModifierBtn, "click", (event) => {
+    event.preventDefault(); // avoid the submit event
+    event.stopPropagation();
+    root.remove();
+  });
 
-      cssValue.set(widthCssValue, borderWidth.name(sideValue));
-      borderStyleSelect.name = borderStyle.name(sideValue);
-      side.set(miniBox, sideValue);
-    })
-  );
+  on(sideSelect, "change", () => {
+    const sideValue = sideSelect.value;
+
+    cssValue.set(widthCssValue, borderWidth.name(sideValue));
+    borderStyleSelect.name = borderStyle.name(sideValue);
+    side.set(miniBox, sideValue);
+  });
 
   initCssValues(root);
 }

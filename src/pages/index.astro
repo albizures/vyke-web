@@ -27,6 +27,11 @@ import { Section } from "@vyke/astro";
     </div>
 
     <div class="p-4">
+      <div class="flex justify-end">
+        <a data-share href="/" class="btn btn-link">
+          share <Icon icon="share" />
+        </a>
+      </div>
       <form class="global-form flex justify-evenly">
         <div class="">
           <span class="pr-2">Width:</span>
@@ -82,7 +87,7 @@ import { Section } from "@vyke/astro";
 
 <script>
   import debounce from "debounce";
-  import { query, select, on } from "@vyke/dom";
+  import { query, select, selectIn, on } from "@vyke/dom";
   import { unwrap } from "@vyke/results";
   import {
     createBorderModifier,
@@ -94,17 +99,57 @@ import { Section } from "@vyke/astro";
     createBorderRadius,
     initAllBorderRadius,
   } from "../components/borderRadius/borderRadius";
+  import { joinFormData } from "../entities/formData";
 
   initCssValues();
   initBorderModifiers();
   initAllNumberValues();
   initAllBorderRadius();
 
-  const [box, globalForm, codeElement] = unwrap(
+  const params = new URL(document.location.href).searchParams;
+
+  const sideValue = params.get("side");
+  if (sideValue) {
+    initSide(document, sideValue);
+    params.delete("side", sideValue);
+  }
+
+  const sideRadiusValue = params.get("sideRadius");
+  if (sideRadiusValue) {
+    initRadius(document, sideRadiusValue);
+    params.delete("sideRadius", sideRadiusValue);
+  }
+
+  function initSide(container: ParentNode, value: string) {
+    const [sideSelect] = unwrap(
+      selectIn(container, query<HTMLSelectElement>("[name=side]"))
+    );
+    sideSelect.value = value;
+    sideSelect.dispatchEvent(
+      new Event("change", {
+        bubbles: true,
+      })
+    );
+  }
+
+  function initRadius(container: ParentNode, value: string) {
+    const [sideSelect] = unwrap(
+      selectIn(container, query<HTMLSelectElement>("[name=sideRadius]"))
+    );
+    sideSelect.value = value;
+    sideSelect.dispatchEvent(
+      new Event("change", {
+        bubbles: true,
+      })
+    );
+  }
+
+  const [box, globalForm, codeElement, shareLink] = unwrap(
     select(
       query<HTMLDivElement>(".box"),
       query<HTMLFormElement>(".global-form"),
-      query<HTMLPreElement>("[data-code]")
+      query<HTMLPreElement>("[data-code]"),
+      query<HTMLAnchorElement>("[data-share]")
     )
   );
   const [newModifierBtn, modifiersForm] = unwrap(
@@ -119,6 +164,57 @@ import { Section } from "@vyke/astro";
       query<HTMLFormElement>(".radius-form")
     )
   );
+
+  while (true) {
+    const sideValue = params.get("side");
+
+    if (sideValue) {
+      const element = createBorderModifier();
+
+      modifiersForm.append(element);
+      initSide(element, sideValue);
+      params.delete("side", sideValue);
+      element.dispatchEvent(
+        new Event("change", {
+          bubbles: true,
+        })
+      );
+    } else {
+      break;
+    }
+  }
+  while (true) {
+    const sideRadiusValue = params.get("sideRadius");
+
+    if (sideRadiusValue) {
+      const element = createBorderRadius();
+      radiusForm.append(element);
+      initRadius(element, sideRadiusValue);
+      params.delete("sideRadius", sideRadiusValue);
+      element.dispatchEvent(
+        new Event("change", {
+          bubbles: true,
+        })
+      );
+    } else {
+      break;
+    }
+  }
+  setTimeout(() => {
+    for (const [key, value] of params) {
+      if (key !== "side") {
+        const selector = `[name="${key}"]`;
+        const result = select(query<HTMLInputElement>(selector));
+
+        if (!result.ok) {
+          console.log("not found", selector);
+          continue;
+        }
+        const [element] = result.value;
+        element.value = value;
+      }
+    }
+  });
 
   on(newModifierBtn, "click", () => {
     modifiersForm.append(createBorderModifier());
@@ -178,6 +274,11 @@ import { Section } from "@vyke/astro";
       }
     }
 
+    const allFormData = joinFormData(globalData, modifiersData, radiusData);
+
+    // @ts-expect-error types doesnt support but it works 🤷‍♂️
+    const params = new URLSearchParams(allFormData);
+    shareLink.href = `/?${params.toString()}`;
     codeElement.innerHTML = formatStyleCode(box.getAttribute("style") ?? "");
   }
 

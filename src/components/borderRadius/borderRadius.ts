@@ -38,7 +38,6 @@ export function initBorderRadius(root: HTMLDivElement) {
 
     cssValue.set(cssValueElement, name);
     sideBox.set(sideBoxElement, side);
-    borderRadiusSideSelect.name = name;
   }
 
   on(borderRadiusSideSelect, "change", () => {
