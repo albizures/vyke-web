@@ -1,6 +1,7 @@
 ---
 import Icon from "../Icon.astro";
 import CssValue from "../cssValue/CssValue.astro";
+import { removeRadius } from "./borderRadius";
 
 export type Props = {
   defaultValue?: number;
@@ -34,6 +35,7 @@ const { defaultValue = 0, sideValue } = Astro.props;
     </select><CssValue defaultValue={defaultValue} name={sideValue} />
   </div>
   <button
+    {...removeRadius.attr()}
     class="btn remove-modifier-btn btn-xs btn-outline btn-error btn-square"
   >
     <span class="sr-only">remove modifier</span>

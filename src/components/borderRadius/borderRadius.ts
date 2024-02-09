@@ -11,6 +11,7 @@ export const allBorderRadius = borderRadius.all();
 export const borderRadiusSide =
   createDataAttr<HTMLSelectElement>("border-radius-side");
 export const sideBox = createDataAttr<HTMLDivElement>("side");
+export const removeRadius = createDataAttr<HTMLButtonElement>("remove");
 
 export function initAllBorderRadius(container: ParentNode = document) {
   const [elements] = unwrap(selectIn(container, allBorderRadius));
@@ -23,9 +24,12 @@ export function initAllBorderRadius(container: ParentNode = document) {
 export function initBorderRadius(root: HTMLDivElement) {
   initCssValues(root);
 
-  const [cssValueElement, borderRadiusSideSelect, sideBoxElement] = unwrap(
-    selectIn(root, cssValue, borderRadiusSide, sideBox)
-  );
+  const [
+    cssValueElement,
+    borderRadiusSideSelect,
+    sideBoxElement,
+    removeRadiusBtn,
+  ] = unwrap(selectIn(root, cssValue, borderRadiusSide, sideBox, removeRadius));
 
   setNames(borderRadius.from(root) ?? "");
 
@@ -41,6 +45,11 @@ export function initBorderRadius(root: HTMLDivElement) {
     const side = borderRadiusSideSelect.value;
 
     setNames(side);
+  });
+  on(removeRadiusBtn, "click", (event) => {
+    event.preventDefault(); // avoid the submit event
+    event.stopPropagation();
+    root.remove();
   });
 }
 
